@@ -1,16 +1,25 @@
 const express = require('express');
+const morgan = require('morgan');
+
+const animalRouter = require('./Routes/animalRoutes');
+const userRouter = require('./Routes/userRoutes');
 
 const app = express();
 
-// app.get('/', (req, res) => {
-//   res.status(200).json({ message: 'Hello!' });
-// });
+// middleware
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+app.use(express.json());
 
-app.get("/api/v1/tours", (req, res) => {
-  
-})
-
-const port = 3000;
-app.listen(port, () => {
-  console.log(`app running on port ${port} ...`);
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
 });
+
+// Routes
+
+app.use('/api/v1/animals', animalRouter);
+app.use('/api/v1/users', userRouter);
+
+module.exports = app;
