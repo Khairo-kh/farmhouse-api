@@ -1,48 +1,14 @@
 const Animal = require('../models/animalModel');
+const APIfeatures = require('../utils/apiFeatures');
 
 exports.getAllAnimals = async (req, res) => {
   try {
-    // Handle query
-    const queryObj = { ...req.query };
-    const ignoredFields = ['page', 'sort', 'limit', 'fields'];
-    ignoredFields.forEach((entry) => {
-      delete queryObj[entry];
-    });
-    // Filtering
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-    let query = Animal.find(JSON.parse(queryStr));
-
-    // Sorting
-    if (req.query.sort) {
-      const sortCriteria = req.query.split(',').join(' ');
-      query = query.sort(sortCriteria);
-    } else {
-      query = query.sort('-createdAt');
-    }
-
-    // projecting
-    if (req.query.fields) {
-      const fields = req.query.fields.split(',').join(' ');
-      query = query.select(fields);
-    } else {
-      query = query.select('-__v');
-    }
-
-    // Pagination
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 100;
-    const skip = (page - 1) * limit;
-
-    query = query.skip(skip).limit(limit);
-
-    if (req.query.page) {
-      const animalCount = await Animal.countDocuments();
-      if (skip >= animalCount) throw new Error('Page does not exist!');
-    }
-
-    const animals = await query;
+    const feat = new APIfeatures(Animal.find(), req.query)
+      .filter()
+      .sort()
+      .limit()
+      .paginate();
+    const animals = await feat.query;
 
     res.status(200).json({
       status: 'success',
