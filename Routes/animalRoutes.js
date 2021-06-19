@@ -4,12 +4,12 @@ const animalController = require('../controllers/animalController');
 
 const router = express.Router();
 
-router.param('id', animalController.checkID);
+// router.param('id', animalController.checkID);
 
 router
   .route('/')
   .get(animalController.getAllAnimals)
-  .post(animalController.checkBody, animalController.createAnimal);
+  .post(animalController.createAnimal);
 
 router
   .route('/:id')
