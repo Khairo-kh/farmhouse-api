@@ -7,10 +7,11 @@ const animalSchema = new mongoose.Schema({
     unique: true,
   },
   birth_date: String,
-  weight: Array,
+  weight: [Object],
   status: { type: String, default: 'alive' },
+  location: { type: Number, default: 22 },
   notes: String,
-  location: Number,
+  createdAt: { type: Date, default: Date.now(), select: false },
 });
 
 const Animal = mongoose.model('Animal', animalSchema);

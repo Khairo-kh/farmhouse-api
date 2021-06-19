@@ -2,7 +2,35 @@ const Animal = require('../models/animalModel');
 
 exports.getAllAnimals = async (req, res) => {
   try {
-    const animals = await Animal.find();
+    // Handle query
+    const queryObj = { ...req.query };
+    const ignoredFields = ['page', 'sort', 'limit', 'fields'];
+    ignoredFields.forEach((entry) => {
+      delete queryObj[entry];
+    });
+    // Filtering
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+
+    let query = Animal.find(JSON.parse(queryStr));
+
+    // Sorting
+    if (req.query.sort) {
+      const sortCriteria = req.query.split(',').join(' ');
+      query = query.sort(sortCriteria);
+    } else {
+      query = query.sort('-createdAt');
+    }
+
+    // projecting
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v')
+    }
+    const animals = await query;
+
     res.status(200).json({
       status: 'success',
       results: animals.length,
