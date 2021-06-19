@@ -27,8 +27,21 @@ exports.getAllAnimals = async (req, res) => {
       const fields = req.query.fields.split(',').join(' ');
       query = query.select(fields);
     } else {
-      query = query.select('-__v')
+      query = query.select('-__v');
     }
+
+    // Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const animalCount = await Animal.countDocuments();
+      if (skip >= animalCount) throw new Error('Page does not exist!');
+    }
+
     const animals = await query;
 
     res.status(200).json({
