@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 
+const ApiError = require('./utils/apiError');
+const errorHandler = require('./controllers/errorController');
 const animalRouter = require('./Routes/animalRoutes');
 const userRouter = require('./Routes/userRoutes');
 
@@ -22,10 +24,9 @@ app.use((req, res, next) => {
 app.use('/api/v1/animals', animalRouter);
 app.use('/api/v1/users', userRouter);
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    status: 'fail',
-    message: `Can't find ${req.originalUrl} on the server!`,
-  });
+  next(new ApiError(`Can't find ${req.originalUrl} on the server!`, 404));
 });
+
+app.use(errorHandler);
 
 module.exports = app;
