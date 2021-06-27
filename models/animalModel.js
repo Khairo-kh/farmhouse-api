@@ -4,7 +4,7 @@ const animalSchema = new mongoose.Schema(
   {
     no: {
       type: String,
-      required: [true, 'Must provide the animal ID'],
+      required: [true, 'Must provide the animal ID.'],
       unique: true,
     },
     birth_date: Date,
@@ -13,7 +13,7 @@ const animalSchema = new mongoose.Schema(
     location: {
       type: Number,
       default: 22,
-      min: [1, 'section number must be positive'],
+      min: [1, 'section number must be positive.'],
     },
     notes: String,
     createdAt: { type: Date, default: Date.now(), select: false },
