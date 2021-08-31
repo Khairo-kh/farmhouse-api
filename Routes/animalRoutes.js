@@ -1,6 +1,6 @@
 const express = require('express');
-
 const animalController = require('../controllers/animalController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(animalController.getAllAnimals)
+  .get(authController.protect, animalController.getAllAnimals)
   .post(animalController.createAnimal);
 
 router

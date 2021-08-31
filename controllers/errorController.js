@@ -17,6 +17,10 @@ const duplicateFieldHandler = (err) => {
   return new ApiError(message, 400);
 };
 
+const handleJwtError = () => new ApiError('Invalid token!', 401);
+const handleJwtExpiry = () =>
+  new ApiError('Your token has expired! Please log in again!', 401);
+
 const devErrors = (err, res) => {
   res.status(err.statusCode).json({
     error: err,
@@ -59,7 +63,10 @@ module.exports = (err, req, res, next) => {
     if (errorObj.name === 'ValidationError') {
       errorObj = validationErrHandler(errorObj);
     }
-    console.log(errorObj.name);
+
+    if (errorObj.name === 'JsonWebTokenError') errorObj = handleJwtError;
+    if (errorObj.name === 'TokenExpiredError') errorObj = handleJwtExpiry;
+
     prodError(errorObj, res);
   }
 };
