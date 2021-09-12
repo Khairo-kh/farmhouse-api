@@ -4,6 +4,7 @@ const weightSchema = new mongoose.Schema(
   {
     recordedOn: {
       type: Date,
+      default: Date.now(),
       required: [
         true,
         'Must provide the date on which the weight was recorded!',
@@ -13,7 +14,7 @@ const weightSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Must provide the value of the weight recorded!'],
     },
-    createdAt: { type: Date, default: Date.now },
+    createdAt: { type: Date, default: Date.now() },
 
     animal: {
       type: mongoose.Schema.ObjectId,
@@ -31,6 +32,14 @@ const weightSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+weightSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'user',
+    select: 'name',
+  });
+  next();
+});
 
 const Weight = mongoose.model('Weight', weightSchema);
 

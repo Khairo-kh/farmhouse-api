@@ -10,6 +10,7 @@ const ApiError = require('./utils/apiError');
 const errorHandler = require('./controllers/errorController');
 const animalRouter = require('./Routes/animalRoutes');
 const userRouter = require('./Routes/userRoutes');
+const weightRouter = require('./Routes/weightRoutes');
 
 const app = express();
 
@@ -46,6 +47,8 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/v1/animals', animalRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/weight', weightRouter);
+
 app.all('*', (req, res, next) => {
   next(new ApiError(`Can't find ${req.originalUrl} on the server!`, 404));
 });

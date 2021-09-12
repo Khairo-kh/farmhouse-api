@@ -30,7 +30,7 @@ exports.createAnimal = catchAsync(async (req, res, next) => {
 });
 
 exports.getAnimal = catchAsync(async (req, res, next) => {
-  const animal = await Animal.findById(req.params.id);
+  const animal = await Animal.findById(req.params.id).populate('weightHistory');
   if (!animal) {
     return next(
       new ApiError(

@@ -36,6 +36,12 @@ animalSchema.virtual('age').get(function () {
   return { days: daysOld, months: monthsOld, years: yearsOld };
 });
 
+animalSchema.virtual('weightHistory', {
+  ref: 'Weight',
+  foreignField: 'animal',
+  localField: '_id',
+});
+
 const Animal = mongoose.model('Animal', animalSchema);
 
 module.exports = Animal;
