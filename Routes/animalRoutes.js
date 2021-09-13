@@ -1,10 +1,13 @@
 const express = require('express');
 const animalController = require('../controllers/animalController');
 const authController = require('../controllers/authController');
+const weightRouter = require('./weightRoutes');
 
 const router = express.Router();
 
 // router.param('id', animalController.checkID);
+
+router.use('/:animalId/weights', weightRouter);
 
 router
   .route('/')
