@@ -8,7 +8,6 @@ const animalSchema = new mongoose.Schema(
       unique: true,
     },
     birth_date: Date,
-    weight: [Object],
     status: { type: String, default: 'alive' },
     location: {
       type: Number,
@@ -17,6 +16,11 @@ const animalSchema = new mongoose.Schema(
     },
     notes: String,
     createdAt: { type: Date, default: Date.now(), select: false },
+    owner: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: [true, 'Animal must belong to a user!'],
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -40,6 +44,14 @@ animalSchema.virtual('weightHistory', {
   ref: 'Weight',
   foreignField: 'animal',
   localField: '_id',
+});
+
+animalSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'owner',
+    select: 'name',
+  });
+  next();
 });
 
 const Animal = mongoose.model('Animal', animalSchema);

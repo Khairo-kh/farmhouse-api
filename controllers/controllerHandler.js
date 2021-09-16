@@ -82,8 +82,8 @@ exports.getAll = (Model) =>
     const feat = new APIfeatures(Model.find(filtered), req.query)
       .filter()
       .sort()
-      .limit()
-      .paginate();
+      .limit();
+    // .paginate()
     const docs = await feat.query; //.explain();
 
     res.status(200).json({
