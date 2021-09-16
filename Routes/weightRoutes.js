@@ -17,4 +17,6 @@ router
   .get(weightController.getWeight)
   .patch(weightController.updateWeight);
 
+router.route('/dailyWeightChange').post(weightController.dailyWeightChange);
+
 module.exports = router;

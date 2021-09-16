@@ -84,7 +84,7 @@ exports.getAll = (Model) =>
       .sort()
       .limit()
       .paginate();
-    const docs = await feat.query;
+    const docs = await feat.query; //.explain();
 
     res.status(200).json({
       status: 'success',
