@@ -1,23 +1,53 @@
 const nodemailer = require('nodemailer');
+const pug = require('pug');
+const { htmlToText } = require('html-to-text');
 
-const sendEmail = async (options) => {
-  const transport = nodemailer.createTransport({
-    host: 'smtp.mailtrap.io',
-    port: 2525,
-    auth: {
-      user: '371d0aa0d552d8',
-      pass: 'bb0fb0a6e4fafb',
-    },
-  });
+module.exports = class Email {
+  constructor(user, url) {
+    this.to = user.email;
+    this.firstName = user.name.split(' ')[0];
+    this.url = url;
+    this.from = `Farm <${process.env.EMAIL_FROM}>`;
+  }
 
-  const mailOptions = {
-    from: 'Kai Kat <khairo.khatib@gmail.com>',
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-  };
+  newTransport() {
+    if (process.env.NODE_ENV === 'production') {
+      //here
+      return 1;
+    }
 
-  await transport.sendMail(mailOptions);
+    return nodemailer.createTransport({
+      host: 'smtp.mailtrap.io',
+      port: 2525,
+      auth: {
+        user: '371d0aa0d552d8',
+        pass: 'bb0fb0a6e4fafb',
+      },
+    });
+  }
+
+  async send(template, subject) {
+    const htmlEmail = pug.renderFile(`${__dirname}/emails/${template}.pug`, {
+      firstName: this.firstName,
+      url: this.url,
+      subject,
+    });
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject,
+      text: htmlToText(htmlEmail),
+      html: htmlEmail,
+    };
+
+    await this.newTransport().sendMail(mailOptions);
+  }
+
+  async sendPasswdReset() {
+    await this.send('passwordReset', 'Your password reset link');
+  }
+
+  async sendWelcome() {
+    await this.send('welcome', 'welcome to the app');
+  }
 };
-
-module.exports = sendEmail;
