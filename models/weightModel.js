@@ -21,7 +21,7 @@ const weightSchema = new mongoose.Schema(
       ref: 'Animal',
       required: [true, 'Weight must belong to some animal!'],
     },
-    user: {
+    owner: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: [true, 'Must specify which user recorded the weight'],

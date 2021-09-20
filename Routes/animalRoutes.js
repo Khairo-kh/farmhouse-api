@@ -5,19 +5,17 @@ const weightRouter = require('./weightRoutes');
 
 const router = express.Router();
 
-// router.param('id', animalController.checkID);
-
 router.use('/:animalId/weights', weightRouter);
 
 router
   .route('/')
   .get(authController.protect, animalController.getAllAnimals)
-  .post(animalController.createAnimal);
+  .post(authController.protect, animalController.createAnimal);
 
 router
   .route('/:id')
-  .get(animalController.getAnimal)
-  .patch(animalController.updateAnimal)
-  .delete(animalController.deleteAnimal);
+  .get(authController.protect, animalController.getAnimal)
+  .patch(authController.protect, animalController.updateAnimal)
+  .delete(authController.protect, animalController.deleteAnimal);
 
 module.exports = router;

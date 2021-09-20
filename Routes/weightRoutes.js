@@ -8,7 +8,7 @@ router.use(authController.protect);
 
 router
   .route('/')
-  .get(authController.protect, weightController.getAllWeights)
+  .get(weightController.getAllWeights)
   .post(weightController.setResourceId, weightController.createWeight);
 
 router
