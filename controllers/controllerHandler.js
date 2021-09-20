@@ -101,6 +101,22 @@ exports.createOne = (Model) =>
 
 exports.getOne = (Model, populateOptions) =>
   catchAsync(async (req, res, next) => {
+    if (Model === Weight) {
+      const weight = await Weight.findById(req.params.id);
+      if (!weight || weight.owner.toString() !== req.user._id.toString()) {
+        return next(
+          new ApiError('Cannot find any weight with the passed id!', 404)
+        );
+      }
+    }
+    if (Model === Animal) {
+      const animal = await Animal.findById(req.params.id);
+      if (!animal || animal.owner._id.toString() !== req.user._id.toString()) {
+        return next(
+          new ApiError('Cannot find any animal with the passed id!', 404)
+        );
+      }
+    }
     let query = Model.findById(req.params.id);
     if (populateOptions) query = query.populate(populateOptions);
     const doc = await query;
