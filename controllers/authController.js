@@ -5,6 +5,7 @@ const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/apiError');
 const Email = require('../utils/email');
+const db = require('../utils/db');
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -36,6 +37,7 @@ const handleToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
+  await db.connectDataBase();
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -53,6 +55,7 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!email || !password) {
     return next(new ApiError('Please provide email and password!', 400));
   }
+  await db.connectDataBase();
 
   const user = await User.findOne({ email }).select('+password');
   if (!user || !(await user.isCorrectPassword(password, user.password))) {
@@ -75,7 +78,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       new ApiError('You must be logged in to perform this action!', 401)
     );
   }
-
+  await db.connectDataBase();
   const decodedJwt = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   const tokenOwner = await User.findById(decodedJwt.id);
 
@@ -95,6 +98,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
+  await db.connectDataBase();
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(
@@ -142,6 +146,7 @@ exports.restrictTo =
   };
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
+  await db.connectDataBase();
   const hashedToken = crypto
     .createHash('sha256')
     .update(req.params.token)
@@ -165,6 +170,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
+  await db.connectDataBase();
   const user = await User.findById(req.user.id).select('+password');
   if (!user.isCorrectPassword(req.body.currentPass, user.password)) {
     return next(new ApiError('Current password is incorrect!', 401));

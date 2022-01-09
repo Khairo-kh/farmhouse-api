@@ -3,9 +3,11 @@ const ApiError = require('../utils/apiError');
 const APIfeatures = require('../utils/apiFeatures');
 const Animal = require('../models/animalModel');
 const Weight = require('../models/weightModel');
+const db = require('../utils/db');
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
+    await db.connectDataBase();
     if (Model === Weight) {
       const weight = await Weight.findById(req.params.id);
       if (!weight || weight.owner.toString() !== req.user._id.toString()) {
@@ -40,6 +42,7 @@ exports.deleteOne = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
+    await db.connectDataBase();
     if (Model === Weight) {
       const weight = await Weight.findById(req.params.id);
       if (!weight || weight.owner.toString() !== req.user._id.toString()) {
@@ -77,6 +80,7 @@ exports.updateOne = (Model) =>
 
 exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
+    await db.connectDataBase();
     if (Model === Weight) {
       req.body.owner = req.user._id;
       const animal = await Animal.findById(req.body.animal);
@@ -101,6 +105,7 @@ exports.createOne = (Model) =>
 
 exports.getOne = (Model, populateOptions) =>
   catchAsync(async (req, res, next) => {
+    await db.connectDataBase();
     if (Model === Weight) {
       const weight = await Weight.findById(req.params.id);
       if (!weight || weight.owner.toString() !== req.user._id.toString()) {
@@ -136,6 +141,7 @@ exports.getOne = (Model, populateOptions) =>
 
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
+    await db.connectDataBase();
     //next two lines required only for GET nested animal weights
     let filtered = {};
     if (req.params.animalId) filtered = { animal: req.params.animalId };
@@ -143,6 +149,7 @@ exports.getAll = (Model) =>
     if (Model === Animal || Model === Weight) {
       filtered = { ...filtered, owner: req.user._id };
     }
+
     const feat = new APIfeatures(Model.find(filtered), req.query)
       .filter()
       .sort()
