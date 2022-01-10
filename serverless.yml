@@ -37,7 +37,7 @@ functions:
 
 #    Define function environment variables here
    environment:
-     NODE_ENV: ${{ secret.NODE_ENV }}
+     NODE_ENV: ${{ secrets.NODE_ENV }}
      PORT: ${{ secret.PORT }}
      USERNAME: ${{ secret.USERNAME }}
      PASSWORD: ${{ secret.PASSWORD }}
