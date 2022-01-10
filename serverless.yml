@@ -37,19 +37,19 @@ functions:
 
 #    Define function environment variables here
    environment:
-     NODE_ENV: secret.NODE_ENV
-     PORT: secret.PORT
-     USERNAME: secret.USERNAME
-     PASSWORD: secret.PASSWORD
-     DATABASE: secret.DATABASE
-     DATABASE_PASSWORD: secret.DATABASE_PASSWORD
-     JWT_SECRET: secret.JWT_SECRET
-     JWT_EXPIRES_IN: secret.JWT_EXPIRES_IN
-     JWT_COOKIE_EXPIRATION: secret.JWT_COOKIE_EXPIRATION
-     EMAIL_USERNAME: secret.EMAIL_USERNAME
-     EMAIL_PASSWORD: secret.EMAIL_PASSWORD
-     EMAIL_HOST: secret.EMAIL_HOST
-     EMAIL_PORT: secret.EMAIL_PORT
-     EMAIL_FROM: secret.EMAIL_FROM
-     SENDGRID_USERNAME: secret.SENDGRID_USERNAME
-     SENDGRID_PASSWORD: secret.SENDGRID_PASSWORD
+     NODE_ENV: ${{ secret.NODE_ENV }}
+     PORT: ${{ secret.PORT }}
+     USERNAME: ${{ secret.USERNAME }}
+     PASSWORD: ${{ secret.PASSWORD }}
+     DATABASE: ${{ secret.DATABASE }}
+     DATABASE_PASSWORD: ${{ secret.DATABASE_PASSWORD }}
+     JWT_SECRET: ${{ secret.JWT_SECRET }}
+     JWT_EXPIRES_IN: ${{ secret.JWT_EXPIRES_IN }}
+     JWT_COOKIE_EXPIRATION: ${{ secret.JWT_COOKIE_EXPIRATION }}
+     EMAIL_USERNAME: ${{ secret.EMAIL_USERNAME }}
+     EMAIL_PASSWORD: ${{ secret.EMAIL_PASSWORD }}
+     EMAIL_HOST: ${{ secret.EMAIL_HOST }}
+     EMAIL_PORT: ${{ secret.EMAIL_PORT }}
+     EMAIL_FROM: ${{ secret.EMAIL_FROM }}
+     SENDGRID_USERNAME: ${{ secret.SENDGRID_USERNAME }}
+     SENDGRID_PASSWORD: ${{ secret.SENDGRID_PASSWORD }}
