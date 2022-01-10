@@ -1,7 +1,7 @@
 {
   "name": "farmhouse_api",
   "version": "1.0.0",
-  "description": "farm managment system backend ",
+  "description": "farm management system backend ",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
@@ -24,7 +24,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "express-mongo-sanitize": "^2.1.0",
-    "express-rate-limit": "^6.0.5",
+    "express-rate-limit": "^5.3.0",
     "helmet": "^5.0.1",
     "hpp": "^0.2.3",
     "html-to-text": "^8.1.0",
@@ -33,7 +33,6 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.7.2",
     "pug": "^3.0.2",
-    "serverless": "^1.54.0",
     "serverless-http": "^2.7.0",
     "validator": "^13.7.0",
     "xss-clean": "^0.1.1"
@@ -48,7 +47,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "nodemon": "^2.0.15",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "serverless": "^2.70.0"
   },
   "engines": {
     "node": ">=10.6.0"

@@ -9,9 +9,8 @@ module.exports.connectDataBase = async () => {
   }
   try {
     databaseConnection = await mongoose.connect(process.env.DATABASE_STR, {
-      useUnifiedTopology: true,
       useNewUrlParser: true,
-      useCreateIndex: true,
+      useUnifiedTopology: true,
     });
     console.log(`Database connected ::: ${databaseConnection.connection.host}`);
   } catch (error) {
