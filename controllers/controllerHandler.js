@@ -108,7 +108,7 @@ exports.getOne = (Model, populateOptions) =>
     await db.connectDataBase();
     if (Model === Weight) {
       const weight = await Weight.findById(req.params.id);
-      if (!weight || weight.owner.toString() !== req.user._id.toString()) {
+      if (!weight || weight.owner._id.toString() !== req.user._id.toString()) {
         return next(
           new ApiError('Cannot find any weight with the passed id!', 404)
         );

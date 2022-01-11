@@ -35,7 +35,7 @@ const weightSchema = new mongoose.Schema(
 
 weightSchema.pre(/^find/, function (next) {
   this.populate({
-    path: 'user',
+    path: 'owner',
     select: 'name',
   });
   next();
