@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const compression = require('compression');
 
 const ApiError = require('./utils/apiError');
 const errorHandler = require('./controllers/errorController');
@@ -36,6 +37,8 @@ app.use(xss());
 
 //prevent parameter pollution
 app.use(hpp());
+
+app.use(compression());
 
 //dev test middleware
 app.use((req, res, next) => {
